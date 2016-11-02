@@ -1,0 +1,261 @@
+/*首页加载进度条*/
+.loading{
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	left: 50%;
+	top: 50%;
+	margin-left: -25px;
+	margin-top:  -25px;
+}
+
+.loading-outer, .loading-inner {
+	position: absolute;
+	top:  0;left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	animation: inherit;
+	animation: load 1s ease 0s infinite alternate-reverse;
+}
+.loading-outer{
+	background-color: rgba(0, 0, 255, .5);
+	animation-direction: alternate;
+}
+.loading-inner{
+	background-color: rgba(64, 255, 255, .5);
+}
+
+@keyframes	load{
+	to{transform: scale(0);}
+}
+
+.loading-text{
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	top: 100%;
+}
+
+
+/* ComponentBase通用样式*/
+.compo-base{
+	position: absolute;
+/*	border: 1px solid black;*/
+}
+
+/* Scatter 散点图*/
+.scatter-point{
+	position: absolute;
+  border-radius: 50%;
+  background: #bbb;
+  opacity: 0;
+  transform: scale(.1);
+  transition: all .5s .2s;
+}
+
+.scatter-point:first-child::after{
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0 ;
+
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+	background: inherit;
+	border-radius: 50%;
+}
+
+@keyframes diffuse{ /*扩散动画*/
+	70%{  /*这里是自定义动画之间的延迟*/
+		transform: scale(1);
+		opacity: .7;
+	}
+	to{
+		transform: scale(1.3) ;
+		opacity : 0
+	}
+}
+
+.compo-load>.scatter-point:first-child::after{
+		animation: diffuse 3s ease 10;
+}
+
+.compo-load>.scatter-point:first-child{
+	opacity: 1;
+	transform: scale(1);
+}
+.compo-load>.scatter-point:nth-child(2){
+	opacity: 1;
+	transform: scale(1);
+}
+.compo-load>.scatter-point:nth-child(3){
+	opacity: 1;
+	transform: scale(1);
+}
+
+
+/*Histogram 水平柱形图*/
+
+.histo-item{
+	position: relative;
+	height: 3rem;
+	width: 100%;
+	margin-bottom: 1rem;
+}
+.histo-item>span{
+	position: absolute;
+}
+.histo-item-name{
+	height: 100%;
+	left: -6ch;
+	line-height: 3rem;
+	margin-left: -3rem;
+}
+.histo-item-progress{
+	height: 100%;
+	left: 0;
+	opacity: 1; /*真正执行生长动画的是内部的::after, 因此这里只需要占一个位置即可*/
+}
+.histo-item-progress::after{
+	content: "";
+	position: absolute;
+	top:0; left: 0;
+	width: 0;
+	height: 100%;
+	transition: all 1s ease .5s; /*等待入场和出场动画的完成*/
+	background: currentColor;
+}
+.histo-item-per{
+	height: 100%;
+	line-height: 3rem;
+	opacity: 0;
+	transition: all 1.5s ease 1s;
+}
+
+
+.compo-load .histo-item-progress::after{
+	width: 100%;
+}
+.compo-load .histo-item-per{
+	opacity: 1;
+}
+
+/*垂直柱形图的样式*/
+
+.histo_v-item{
+	position: relative;
+	height: 100%;
+	text-align: center;
+	float: left;
+}
+.histo_v-item-per{
+	position: absolute;
+	width: 100%;
+	margin-top: -2ch;
+	z-index: 1;
+	opacity: 0;
+	transition: all 1s 1.5s;
+}
+.histo_v-item-progress{
+	position: absolute;
+	width: 80%;
+	left: 50%;
+	bottom: 0;
+	margin-left: -40%;
+}
+
+.histo_v-item-name{
+	position: absolute;
+	bottom: -2ch ;
+	width: 100%;
+}
+
+.histo_v-item-progress::after{
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 0;
+	background: currentColor;;
+	transition: all 1s .5s;
+}
+.compo-load .histo_v-item-progress::after{
+	height: 100%;
+}
+.compo-load .histo_v-item-per{
+	opacity: 1;
+}
+
+
+/*折线图样式*/
+
+.linechart-name{
+	position: absolute;
+	height: 3rem;
+	line-height: 3rem;
+	text-align: center;
+	bottom: -2rem;
+	opacity: 0 ;
+	transition: all 1s ease 1.5s;
+}
+.compo-load .linechart-name{
+	opacity: 1 ;
+}
+.linechar-canvas{
+	position: absolute;
+	top: 0;left: 0;
+}
+
+/* 雷达图样式*/
+.radar-canvas{
+	position: absolute;
+	left: 0;top: 0;
+}
+.radar-name{
+	position: absolute;
+	opacity: 0;
+	transition: all 1s ease 1.5s;
+}
+.compo-load .radar-name{
+	opacity: 1;
+}
+
+/*饼图动画*/
+.piechart-canvas{
+	position: absolute;
+	left: 0;top: 0;
+}
+.piechart-name{
+	position: absolute;
+	opacity: 0;
+	transition: all 1s ease 1.5s;
+}
+.compo-load .piechart-name{
+	opacity: 1;
+}
+
+/* 环形图的样式 */
+.ring-canvas{
+	position: absolute;
+	transform: rotate(180deg);
+}
+.ring-name{
+	position: absolute;
+	top: 50%;left: 50%;
+	transform: translate(-50%, -50%);
+}
+.ring-per{
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	top:  100%;
+	opacity: 0;
+	transition:  all .5s ease 2s;
+}
+
+.compo-load .ring-per{
+	opacity: 1;
+}
